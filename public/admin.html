@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LMUC License Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; }
+    .badge-trial    { background:#fef3c7;color:#92400e; }
+    .badge-monthly  { background:#dbeafe;color:#1e40af; }
+    .badge-yearly   { background:#d1fae5;color:#065f46; }
+    .badge-lifetime { background:#ede9fe;color:#5b21b6; }
+    .badge-active   { background:#d1fae5;color:#065f46; }
+    .badge-revoked  { background:#fee2e2;color:#991b1b; }
+    .badge-expired  { background:#f3f4f6;color:#6b7280; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+<!-- Auth overlay -->
+<div id="authOverlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm">
+    <h1 class="text-xl font-bold text-slate-800 mb-1">LMUC License Manager</h1>
+    <p class="text-sm text-slate-500 mb-6">Enter your admin key to continue</p>
+    <input id="adminKeyInput" type="password" placeholder="Admin API key"
+      class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 mb-3" />
+    <p id="authError" class="text-xs text-red-500 mb-3 hidden">Invalid key</p>
+    <button onclick="login()" class="w-full bg-indigo-600 text-white font-semibold rounded-xl py-2.5 hover:bg-indigo-700 transition">
+      Login
+    </button>
+  </div>
+</div>
+
+<!-- Main app -->
+<div id="app" class="hidden">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-2xl">🔑</span>
+      <div>
+        <h1 class="font-bold text-slate-800 text-lg leading-tight">License Manager</h1>
+        <p class="text-xs text-slate-400">LMUC POS — Device License Control</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="openIssueModal()" class="flex items-center gap-2 bg-indigo-600 text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-indigo-700 transition">
+        + Issue License
+      </button>
+      <button onclick="logout()" class="text-sm text-slate-500 hover:text-slate-700 px-3 py-2 rounded-xl hover:bg-slate-100 transition">Logout</button>
+    </div>
+  </header>
+
+  <!-- Stats bar -->
+  <div id="statsBar" class="grid grid-cols-2 sm:grid-cols-5 gap-4 p-6 pb-0"></div>
+
+  <!-- Filters -->
+  <div class="px-6 py-4 flex flex-wrap items-center gap-3">
+    <input id="searchInput" type="text" placeholder="Search device, name, notes…"
+      oninput="loadLicenses()"
+      class="border border-slate-200 rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500 w-64" />
+    <select id="statusFilter" onchange="loadLicenses()"
+      class="border border-slate-200 rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+      <option value="">All statuses</option>
+      <option value="active">Active</option>
+      <option value="revoked">Revoked</option>
+    </select>
+    <select id="planFilter" onchange="loadLicenses()"
+      class="border border-slate-200 rounded-xl px-3.5 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+      <option value="">All plans</option>
+      <option value="trial">Trial</option>
+      <option value="monthly">Monthly</option>
+      <option value="yearly">Yearly</option>
+      <option value="lifetime">Lifetime</option>
+    </select>
+    <button onclick="loadLicenses()" class="text-sm text-indigo-600 font-semibold hover:text-indigo-800">Refresh</button>
+  </div>
+
+  <!-- Table -->
+  <div class="px-6 pb-8">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 border-b border-slate-200">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Device</th>
+            <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Key</th>
+            <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Plan</th>
+            <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+            <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Expires</th>
+            <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Last Seen</th>
+            <th class="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Notes</th>
+            <th class="px-4 py-3"></th>
+          </tr>
+        </thead>
+        <tbody id="licenseTable" class="divide-y divide-slate-100">
+          <tr><td colspan="8" class="py-16 text-center text-slate-400 text-sm">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Issue / Edit Modal -->
+<div id="issueModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 px-6 py-5 flex items-center justify-between">
+      <h2 id="modalTitle" class="font-bold text-white text-lg">Issue License</h2>
+      <button onclick="closeModal()" class="text-white/70 hover:text-white text-xl leading-none">&times;</button>
+    </div>
+    <div class="p-6 space-y-4">
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Device ID <span class="text-red-400">*</span></label>
+        <input id="mDeviceId" type="text" placeholder="MID-a3f9b2c1"
+          class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500 font-mono" />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Device / Shop Name</label>
+        <input id="mDeviceName" type="text" placeholder="RA Gold - Terminal 1"
+          class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Plan</label>
+          <select id="mPlan" onchange="updateDays()"
+            class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="trial">Trial (3 days)</option>
+            <option value="monthly" selected>Monthly (30 days)</option>
+            <option value="yearly">Yearly (365 days)</option>
+            <option value="lifetime">Lifetime</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Custom Days</label>
+          <input id="mDays" type="number" min="1" placeholder="Auto"
+            class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Notes</label>
+        <input id="mNotes" type="text" placeholder="Customer name, shop, etc."
+          class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+      <p id="modalError" class="text-sm text-red-500 hidden"></p>
+    </div>
+    <div class="flex gap-3 px-6 pb-6">
+      <button onclick="closeModal()" class="flex-1 py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition">Cancel</button>
+      <button onclick="submitModal()" id="mSubmitBtn" class="flex-1 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition">Issue License</button>
+    </div>
+  </div>
+</div>
+
+<!-- Key display toast -->
+<div id="keyToast" class="fixed bottom-6 right-6 z-50 hidden bg-slate-900 text-white rounded-2xl shadow-2xl p-5 max-w-sm">
+  <p class="text-xs text-slate-400 mb-1">New license key — send this to the customer:</p>
+  <p id="keyToastValue" class="font-mono text-sm font-bold text-green-400 break-all mb-3"></p>
+  <div class="flex gap-2">
+    <button onclick="copyKey()" class="flex-1 text-xs font-semibold bg-white/10 hover:bg-white/20 rounded-lg py-1.5 transition">Copy</button>
+    <button onclick="document.getElementById('keyToast').classList.add('hidden')" class="flex-1 text-xs font-semibold bg-white/10 hover:bg-white/20 rounded-lg py-1.5 transition">Dismiss</button>
+  </div>
+</div>
+
+<script>
+  let ADMIN_KEY = '';
+  let editingDeviceId = null;
+
+  const PLAN_DAYS = { trial: 3, monthly: 30, yearly: 365, lifetime: null };
+
+  // ─── Auth ─────────────────────────────────────────────────────────────────────
+  async function login() {
+    const key = document.getElementById('adminKeyInput').value.trim();
+    if (!key) return;
+    const res = await fetch('/admin/licenses?admin_key=' + encodeURIComponent(key));
+    if (res.status === 401) {
+      document.getElementById('authError').classList.remove('hidden');
+      return;
+    }
+    ADMIN_KEY = key;
+    sessionStorage.setItem('admin_key', key);
+    document.getElementById('authOverlay').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    loadLicenses();
+  }
+
+  function logout() {
+    sessionStorage.removeItem('admin_key');
+    location.reload();
+  }
+
+  document.getElementById('adminKeyInput').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+  // Auto-login from session
+  const savedKey = sessionStorage.getItem('admin_key');
+  if (savedKey) {
+    ADMIN_KEY = savedKey;
+    document.getElementById('authOverlay').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    loadLicenses();
+  }
+
+  // ─── API helpers ──────────────────────────────────────────────────────────────
+  function api(path, opts = {}) {
+    return fetch('/admin' + path, {
+      ...opts,
+      headers: { 'Content-Type': 'application/json', 'X-Admin-Key': ADMIN_KEY, ...(opts.headers || {}) },
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+    }).then(r => r.json());
+  }
+
+  // ─── Load licenses ────────────────────────────────────────────────────────────
+  async function loadLicenses() {
+    const search = document.getElementById('searchInput').value;
+    const status = document.getElementById('statusFilter').value;
+    const plan   = document.getElementById('planFilter').value;
+
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    if (status) params.set('status', status);
+    if (plan)   params.set('plan', plan);
+
+    const { stats, data } = await api('/licenses?' + params.toString());
+    renderStats(stats);
+    renderTable(data);
+  }
+
+  function renderStats(s) {
+    document.getElementById('statsBar').innerHTML = [
+      { label: 'Total',   value: s.total,   color: 'bg-slate-100 text-slate-700' },
+      { label: 'Active',  value: s.active,   color: 'bg-green-50 text-green-700' },
+      { label: 'Trial',   value: s.trial,    color: 'bg-amber-50 text-amber-700' },
+      { label: 'Expired', value: s.expired,  color: 'bg-slate-50 text-slate-500' },
+      { label: 'Revoked', value: s.revoked,  color: 'bg-red-50 text-red-700' },
+    ].map(({ label, value, color }) => `
+      <div class="${color} rounded-2xl p-4 flex items-center justify-between">
+        <span class="text-sm font-semibold">${label}</span>
+        <span class="text-2xl font-bold">${value}</span>
+      </div>
+    `).join('');
+  }
+
+  function fmtDate(d) {
+    if (!d) return '<span class="text-purple-600 font-semibold">Lifetime</span>';
+    const date = new Date(d);
+    const past = date < new Date();
+    return `<span class="${past ? 'text-red-500' : 'text-slate-700'}">${date.toLocaleDateString()}</span>`;
+  }
+
+  function fmtRelative(d) {
+    if (!d) return '—';
+    const diff = Math.floor((Date.now() - new Date(d)) / 60000);
+    if (diff < 1)   return 'Just now';
+    if (diff < 60)  return `${diff}m ago`;
+    if (diff < 1440) return `${Math.floor(diff/60)}h ago`;
+    return `${Math.floor(diff/1440)}d ago`;
+  }
+
+  function planBadge(plan) {
+    return `<span class="badge-${plan} text-xs font-bold px-2 py-0.5 rounded-full capitalize">${plan}</span>`;
+  }
+
+  function statusBadge(row) {
+    if (row.status === 'revoked') return `<span class="badge-revoked text-xs font-bold px-2 py-0.5 rounded-full">Revoked</span>`;
+    if (row.is_expired)          return `<span class="badge-expired text-xs font-bold px-2 py-0.5 rounded-full">Expired</span>`;
+    return `<span class="badge-active text-xs font-bold px-2 py-0.5 rounded-full">Active</span>`;
+  }
+
+  function renderTable(rows) {
+    const tbody = document.getElementById('licenseTable');
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="8" class="py-16 text-center text-slate-400 text-sm">No licenses found</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(r => `
+      <tr class="hover:bg-slate-50 transition-colors">
+        <td class="px-4 py-3">
+          <p class="font-semibold text-slate-800 text-xs">${r.device_name || '—'}</p>
+          <p class="font-mono text-xs text-slate-400">${r.device_id}</p>
+        </td>
+        <td class="px-4 py-3">
+          <span class="font-mono text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-lg">${r.license_key}</span>
+        </td>
+        <td class="px-4 py-3">${planBadge(r.plan)}</td>
+        <td class="px-4 py-3">${statusBadge(r)}</td>
+        <td class="px-4 py-3 text-sm">${fmtDate(r.expires_at)}${r.days_left !== null ? `<br><span class="text-xs text-slate-400">${r.days_left}d left</span>` : ''}</td>
+        <td class="px-4 py-3 text-xs text-slate-400">${fmtRelative(r.last_checked_at)}</td>
+        <td class="px-4 py-3 text-xs text-slate-400 max-w-[120px] truncate">${r.notes || '—'}</td>
+        <td class="px-4 py-3">
+          <div class="flex items-center gap-1">
+            <button onclick="openEditModal('${r.device_id}')" title="Renew / Edit"
+              class="text-xs px-2.5 py-1 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded-lg font-semibold transition">
+              Edit
+            </button>
+            ${r.status !== 'revoked'
+              ? `<button onclick="revoke('${r.device_id}')" title="Revoke"
+                  class="text-xs px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg font-semibold transition">
+                  Revoke
+                </button>`
+              : `<button onclick="reinstate('${r.device_id}')"
+                  class="text-xs px-2.5 py-1 bg-green-50 text-green-600 hover:bg-green-100 rounded-lg font-semibold transition">
+                  Reinstate
+                </button>`
+            }
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // ─── Modal ────────────────────────────────────────────────────────────────────
+  function openIssueModal() {
+    editingDeviceId = null;
+    document.getElementById('modalTitle').textContent = 'Issue License';
+    document.getElementById('mSubmitBtn').textContent  = 'Issue License';
+    document.getElementById('mDeviceId').value   = '';
+    document.getElementById('mDeviceId').disabled = false;
+    document.getElementById('mDeviceName').value = '';
+    document.getElementById('mPlan').value       = 'monthly';
+    document.getElementById('mDays').value       = '';
+    document.getElementById('mNotes').value      = '';
+    document.getElementById('modalError').classList.add('hidden');
+    document.getElementById('issueModal').classList.remove('hidden');
+  }
+
+  async function openEditModal(deviceId) {
+    editingDeviceId = deviceId;
+    const row = await api('/licenses/' + deviceId);
+    document.getElementById('modalTitle').textContent = 'Renew / Edit License';
+    document.getElementById('mSubmitBtn').textContent  = 'Save & Regenerate Key';
+    document.getElementById('mDeviceId').value   = row.device_id;
+    document.getElementById('mDeviceId').disabled = true;
+    document.getElementById('mDeviceName').value = row.device_name || '';
+    document.getElementById('mPlan').value       = row.plan;
+    document.getElementById('mDays').value       = '';
+    document.getElementById('mNotes').value      = row.notes || '';
+    document.getElementById('modalError').classList.add('hidden');
+    document.getElementById('issueModal').classList.remove('hidden');
+  }
+
+  function closeModal() {
+    document.getElementById('issueModal').classList.add('hidden');
+  }
+
+  function updateDays() {
+    const plan = document.getElementById('mPlan').value;
+    const d = PLAN_DAYS[plan];
+    document.getElementById('mDays').placeholder = d ? `${d} (default)` : 'N/A';
+  }
+
+  async function submitModal() {
+    const deviceId   = document.getElementById('mDeviceId').value.trim();
+    const deviceName = document.getElementById('mDeviceName').value.trim();
+    const plan       = document.getElementById('mPlan').value;
+    const days       = document.getElementById('mDays').value || null;
+    const notes      = document.getElementById('mNotes').value.trim();
+
+    if (!deviceId) {
+      document.getElementById('modalError').textContent = 'Device ID is required';
+      document.getElementById('modalError').classList.remove('hidden');
+      return;
+    }
+
+    const body = { plan, notes: notes || null, device_name: deviceName || null, regenerate_key: true };
+    if (days) body.custom_days = parseInt(days);
+
+    let result;
+    if (editingDeviceId) {
+      result = await api('/licenses/' + editingDeviceId, { method: 'PUT', body });
+    } else {
+      result = await api('/licenses', { method: 'POST', body: { ...body, device_id: deviceId } });
+    }
+
+    if (result.error) {
+      document.getElementById('modalError').textContent = result.error;
+      document.getElementById('modalError').classList.remove('hidden');
+      return;
+    }
+
+    closeModal();
+    loadLicenses();
+
+    const newKey = result.new_key || result.generated_key || result.license_key;
+    if (newKey) {
+      document.getElementById('keyToastValue').textContent = newKey;
+      document.getElementById('keyToast').classList.remove('hidden');
+    }
+  }
+
+  function copyKey() {
+    navigator.clipboard.writeText(document.getElementById('keyToastValue').textContent);
+    document.querySelector('#keyToast button').textContent = 'Copied!';
+    setTimeout(() => document.querySelector('#keyToast button').textContent = 'Copy', 2000);
+  }
+
+  async function revoke(deviceId) {
+    if (!confirm(`Revoke license for ${deviceId}?\n\nThe device will be locked on next check.`)) return;
+    await api('/licenses/' + deviceId + '/revoke', { method: 'POST' });
+    loadLicenses();
+  }
+
+  async function reinstate(deviceId) {
+    await api('/licenses/' + deviceId + '/reinstate', { method: 'POST' });
+    loadLicenses();
+  }
+
+  updateDays();
+</script>
+</body>
+</html>
