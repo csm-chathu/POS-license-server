@@ -363,9 +363,11 @@
     if (days) body.custom_days = parseInt(days);
 
     let result;
-    if (editingDeviceId) {
-      result = await api('/licenses/' + editingDeviceId, { method: 'PUT', body });
-    } else {
+    const targetId = editingDeviceId || deviceId;
+    // Try PUT first (works whether device was auto-registered or not)
+    result = await api('/licenses/' + targetId, { method: 'PUT', body });
+    if (result.error === 'Device not found') {
+      // Device never launched the app — create fresh
       result = await api('/licenses', { method: 'POST', body: { ...body, device_id: deviceId } });
     }
 
