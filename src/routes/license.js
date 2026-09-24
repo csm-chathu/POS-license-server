@@ -2,16 +2,21 @@ const router  = require('express').Router();
 const { v4: uuid } = require('uuid');
 const { DeviceLicense } = require('../models');
 
-const TRIAL_DAYS = parseInt(process.env.TRIAL_DAYS || '3');
+const TRIAL_DAYS    = parseInt(process.env.TRIAL_DAYS    || '3');
+const TRIAL_MINUTES = parseInt(process.env.TRIAL_MINUTES || '0');
 
 function generateKey() {
   const seg = () => Math.random().toString(36).toUpperCase().slice(2, 6).padEnd(4, '0');
   return `LMUC-${seg()}-${seg()}-${seg()}-${seg()}`;
 }
 
-function addDays(days) {
+function trialExpiry() {
   const d = new Date();
-  d.setDate(d.getDate() + days);
+  if (TRIAL_MINUTES > 0) {
+    d.setMinutes(d.getMinutes() + TRIAL_MINUTES);
+  } else {
+    d.setDate(d.getDate() + TRIAL_DAYS);
+  }
   return d;
 }
 
@@ -36,7 +41,7 @@ router.post('/init', async (req, res) => {
       license_key: key,
       plan:        'trial',
       status:      'active',
-      expires_at:  addDays(TRIAL_DAYS),
+      expires_at:  trialExpiry(),
     });
   }
 
