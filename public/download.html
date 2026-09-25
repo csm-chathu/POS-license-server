@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download LMUC POS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .float { animation: float 3s ease-in-out infinite; }
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .fade-up-2 { animation: fadeUp 0.6s 0.15s ease both; }
+    .fade-up-3 { animation: fadeUp 0.6s 0.3s ease both; }
+    .fade-up-4 { animation: fadeUp 0.6s 0.45s ease both; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex flex-col items-center justify-center px-4 py-12">
+
+  <!-- Background orbs -->
+  <div class="pointer-events-none fixed inset-0 overflow-hidden">
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600 rounded-full opacity-10 blur-3xl"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-orange-500 rounded-full opacity-10 blur-3xl"></div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-lg text-center">
+
+    <!-- Logo -->
+    <div class="fade-up mb-8">
+      <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center mx-auto mb-5 shadow-2xl shadow-indigo-500/40 float">
+        <span class="text-white font-black text-3xl">L</span>
+      </div>
+      <h1 class="text-4xl font-extrabold text-white tracking-tight">
+        LU<span class="bg-gradient-to-r from-indigo-400 to-blue-400 bg-clip-text text-transparent">MAC</span> POS
+      </h1>
+      <p class="text-slate-400 mt-2 text-sm">Point of Sale for your business</p>
+    </div>
+
+    <!-- Download card -->
+    <div class="fade-up-2 bg-white/5 backdrop-blur border border-white/10 rounded-3xl p-8 mb-6 shadow-2xl">
+      <div class="flex items-center justify-center gap-3 mb-6">
+        <svg class="w-8 h-8 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+        </svg>
+        <div class="text-left">
+          <p class="text-white font-bold text-lg leading-tight">Windows Installer</p>
+          <p class="text-slate-400 text-xs">For Windows 10 / 11 (64-bit)</p>
+        </div>
+      </div>
+
+      <a href="/download" id="downloadBtn"
+        class="flex items-center justify-center gap-3 w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white font-bold text-lg shadow-lg shadow-indigo-500/30 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] group">
+        <svg class="w-6 h-6 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        Download for Windows
+      </a>
+
+      <p id="versionLabel" class="text-slate-500 text-xs mt-3">Fetching latest version…</p>
+    </div>
+
+    <!-- Features -->
+    <div class="fade-up-3 grid grid-cols-3 gap-3 mb-8">
+      <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
+        <div class="text-2xl mb-1">⚡</div>
+        <p class="text-white text-xs font-semibold">Works Offline</p>
+        <p class="text-slate-500 text-xs mt-0.5">No internet needed</p>
+      </div>
+      <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
+        <div class="text-2xl mb-1">🔄</div>
+        <p class="text-white text-xs font-semibold">Auto Updates</p>
+        <p class="text-slate-500 text-xs mt-0.5">Always up to date</p>
+      </div>
+      <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
+        <div class="text-2xl mb-1">🔑</div>
+        <p class="text-white text-xs font-semibold">3-Day Trial</p>
+        <p class="text-slate-500 text-xs mt-0.5">Free to try</p>
+      </div>
+    </div>
+
+    <!-- Install steps -->
+    <div class="fade-up-4 bg-white/5 rounded-2xl border border-white/10 p-5 mb-8 text-left">
+      <p class="text-white font-semibold text-sm mb-3">How to install</p>
+      <div class="space-y-2.5">
+        <div class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+          <p class="text-slate-300 text-sm">Click <strong class="text-white">Download for Windows</strong> above</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+          <p class="text-slate-300 text-sm">Run <code class="bg-white/10 px-1.5 py-0.5 rounded text-xs">POS-APP-Offline-Setup-*.exe</code></p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+          <p class="text-slate-300 text-sm">Launch the app — a <strong class="text-white">3-day free trial</strong> starts automatically</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="w-5 h-5 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+          <p class="text-slate-300 text-sm">After trial, contact us for a license key</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-slate-500 text-xs">
+      Need help? <a href="mailto:support@lumac.cc" class="text-indigo-400 hover:underline font-medium">support@lumac.cc</a>
+      &nbsp;·&nbsp; 076 464 3050 &nbsp;·&nbsp;
+      <a href="https://lumac.lk" class="text-indigo-400 hover:underline font-medium">lumac.lk</a>
+    </p>
+  </div>
+
+  <script>
+    // Fetch latest release info to show version
+    fetch('https://api.github.com/repos/csm-chathu/POS-offline/releases/latest', {
+      headers: { Accept: 'application/vnd.github+json' }
+    })
+    .then(r => r.json())
+    .then(data => {
+      const label = document.getElementById('versionLabel');
+      if (data.tag_name) {
+        const asset = data.assets?.find(a => a.name.endsWith('.exe'));
+        const size  = asset ? ` · ${(asset.size / 1024 / 1024).toFixed(1)} MB` : '';
+        label.textContent = `Latest: ${data.tag_name}${size}`;
+      } else {
+        label.textContent = '';
+      }
+    })
+    .catch(() => { document.getElementById('versionLabel').textContent = ''; });
+  </script>
+</body>
+</html>
