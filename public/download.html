@@ -1,132 +1,241 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Download LMUC POS</title>
+  <title>LUMAC POS — බාගන්න / Download</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Inter', sans-serif; }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    body { font-family: 'Inter', 'Noto Sans Sinhala', sans-serif; }
+    .si { font-family: 'Noto Sans Sinhala', sans-serif; }
+
+    @keyframes float  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
     @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .float { animation: float 3s ease-in-out infinite; }
-    .fade-up { animation: fadeUp 0.6s ease both; }
-    .fade-up-2 { animation: fadeUp 0.6s 0.15s ease both; }
-    .fade-up-3 { animation: fadeUp 0.6s 0.3s ease both; }
-    .fade-up-4 { animation: fadeUp 0.6s 0.45s ease both; }
+    @keyframes glow   { 0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.5)} 60%{box-shadow:0 0 0 14px rgba(99,102,241,0)} }
+
+    .float    { animation: float 4s ease-in-out infinite; }
+    .btn-glow { animation: glow 2.5s ease-in-out infinite; }
+
+    .f1 { opacity:0; animation: fadeUp .6s .05s ease forwards; }
+    .f2 { opacity:0; animation: fadeUp .6s .15s ease forwards; }
+    .f3 { opacity:0; animation: fadeUp .6s .28s ease forwards; }
+    .f4 { opacity:0; animation: fadeUp .6s .42s ease forwards; }
+    .f5 { opacity:0; animation: fadeUp .6s .56s ease forwards; }
+
+    .card { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); backdrop-filter:blur(10px); }
+    .step-num { background:linear-gradient(135deg,#6366f1,#4f46e5); }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex flex-col items-center justify-center px-4 py-12">
+<body class="min-h-screen bg-gradient-to-br from-[#0d1225] via-[#111827] to-[#0d1225] px-4 py-10 flex flex-col items-center">
 
-  <!-- Background orbs -->
+  <!-- Soft background glow -->
   <div class="pointer-events-none fixed inset-0 overflow-hidden">
-    <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600 rounded-full opacity-10 blur-3xl"></div>
-    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-orange-500 rounded-full opacity-10 blur-3xl"></div>
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full opacity-10"
+         style="background:radial-gradient(ellipse,#6366f1,transparent 70%)"></div>
+    <div class="absolute bottom-0 left-1/4 w-96 h-96 rounded-full opacity-[.07]"
+         style="background:radial-gradient(circle,#f97316,transparent 70%)"></div>
   </div>
 
-  <div class="relative z-10 w-full max-w-lg text-center">
+  <div class="relative z-10 w-full max-w-md">
 
-    <!-- Logo -->
-    <div class="fade-up mb-8">
-      <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center mx-auto mb-5 shadow-2xl shadow-indigo-500/40 float">
-        <span class="text-white font-black text-3xl">L</span>
+    <!-- ── Logo & Brand ── -->
+    <div class="f1 text-center mb-8">
+      <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-indigo-500/30 float">
+        <span class="text-white font-black text-4xl">L</span>
       </div>
-      <h1 class="text-4xl font-extrabold text-white tracking-tight">
-        LU<span class="bg-gradient-to-r from-indigo-400 to-blue-400 bg-clip-text text-transparent">MAC</span> POS
-      </h1>
-      <p class="text-slate-400 mt-2 text-sm">Point of Sale for your business</p>
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">LUMAC POS</h1>
+      <p class="text-indigo-300 text-sm font-medium mt-1 si">ඔබේ කඩේ සඳහා හොඳම POS</p>
+      <p class="text-slate-500 text-xs mt-0.5">Best POS for your shop</p>
     </div>
 
-    <!-- Download card -->
-    <div class="fade-up-2 bg-white/5 backdrop-blur border border-white/10 rounded-3xl p-8 mb-6 shadow-2xl">
-      <div class="flex items-center justify-center gap-3 mb-6">
-        <svg class="w-8 h-8 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
-        </svg>
-        <div class="text-left">
-          <p class="text-white font-bold text-lg leading-tight">Windows Installer</p>
-          <p class="text-slate-400 text-xs">For Windows 10 / 11 (64-bit)</p>
+    <!-- ── Download Card ── -->
+    <div class="f2 card rounded-3xl p-6 mb-4 shadow-2xl">
+
+      <!-- Windows badge -->
+      <div class="flex items-center gap-3 mb-5 p-3 rounded-2xl bg-white/5">
+        <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-white font-semibold text-sm si">Windows සඳහා</p>
+          <p class="text-slate-400 text-xs">For Windows 10 / 11</p>
+        </div>
+        <div class="ml-auto text-right">
+          <p id="versionBadge" class="text-indigo-300 text-xs font-medium">—</p>
+          <p id="sizeBadge" class="text-slate-500 text-xs">—</p>
         </div>
       </div>
 
+      <!-- Big download button -->
       <a href="/download" id="downloadBtn"
-        class="flex items-center justify-center gap-3 w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white font-bold text-lg shadow-lg shadow-indigo-500/30 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] group">
-        <svg class="w-6 h-6 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+         class="btn-glow flex items-center justify-center gap-3 w-full py-5 px-6 rounded-2xl bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white font-bold text-xl shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[.98] group mb-4">
+        <svg class="w-7 h-7 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
         </svg>
-        Download for Windows
+        <span>
+          <span class="block si text-lg leading-tight">බාගන්න</span>
+          <span class="block text-base font-semibold opacity-80">Download</span>
+        </span>
       </a>
 
-      <p id="versionLabel" class="text-slate-500 text-xs mt-3">Fetching latest version…</p>
-    </div>
-
-    <!-- Features -->
-    <div class="fade-up-3 grid grid-cols-3 gap-3 mb-8">
-      <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
-        <div class="text-2xl mb-1">⚡</div>
-        <p class="text-white text-xs font-semibold">Works Offline</p>
-        <p class="text-slate-500 text-xs mt-0.5">No internet needed</p>
-      </div>
-      <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
-        <div class="text-2xl mb-1">🔄</div>
-        <p class="text-white text-xs font-semibold">Auto Updates</p>
-        <p class="text-slate-500 text-xs mt-0.5">Always up to date</p>
-      </div>
-      <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
-        <div class="text-2xl mb-1">🔑</div>
-        <p class="text-white text-xs font-semibold">3-Day Trial</p>
-        <p class="text-slate-500 text-xs mt-0.5">Free to try</p>
+      <!-- Download count -->
+      <div class="flex items-center justify-center gap-2 text-center">
+        <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm3.707 8.293l-4 4a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L9 12.086l3.293-3.293a1 1 0 011.414 1.414z"/>
+        </svg>
+        <p class="text-slate-400 text-sm">
+          <strong id="dlCount" class="text-white font-bold">—</strong>
+          <span class="si"> දෙනෙකු බාගෙන ඇත</span>
+          <span class="text-slate-500"> · </span>
+          <span>already downloaded</span>
+        </p>
       </div>
     </div>
 
-    <!-- Install steps -->
-    <div class="fade-up-4 bg-white/5 rounded-2xl border border-white/10 p-5 mb-8 text-left">
-      <p class="text-white font-semibold text-sm mb-3">How to install</p>
-      <div class="space-y-2.5">
-        <div class="flex items-start gap-3">
-          <span class="w-5 h-5 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
-          <p class="text-slate-300 text-sm">Click <strong class="text-white">Download for Windows</strong> above</p>
+    <!-- ── Free Trial Notice ── -->
+    <div class="f3 card rounded-2xl p-4 mb-4 flex gap-3 items-start">
+      <span class="text-2xl shrink-0">🎁</span>
+      <div>
+        <p class="text-white font-semibold text-sm si">දින 3ක් නොමිලේ</p>
+        <p class="text-slate-400 text-xs mt-0.5">Free for 3 days — no payment, no signup needed.</p>
+        <p class="text-slate-500 text-xs si mt-0.5">ගෙවීමක් නොමැතිව, ලියාපදිංචි නොවී ආරම්භ කරන්න.</p>
+      </div>
+    </div>
+
+    <!-- ── Features ── -->
+    <div class="f3 grid grid-cols-2 gap-3 mb-4">
+
+      <div class="card rounded-2xl p-4 flex gap-3 items-start">
+        <span class="text-xl shrink-0">⚡</span>
+        <div>
+          <p class="text-white text-xs font-semibold si">ඉක්මන්</p>
+          <p class="text-slate-500 text-xs">Super fast sales</p>
         </div>
-        <div class="flex items-start gap-3">
-          <span class="w-5 h-5 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
-          <p class="text-slate-300 text-sm">Run <code class="bg-white/10 px-1.5 py-0.5 rounded text-xs">POS-APP-Offline-Setup-*.exe</code></p>
+      </div>
+
+      <div class="card rounded-2xl p-4 flex gap-3 items-start">
+        <span class="text-xl shrink-0">📶</span>
+        <div>
+          <p class="text-white text-xs font-semibold si">නෙට් නැතිව</p>
+          <p class="text-slate-500 text-xs">Works without internet</p>
         </div>
-        <div class="flex items-start gap-3">
-          <span class="w-5 h-5 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
-          <p class="text-slate-300 text-sm">Launch the app — a <strong class="text-white">3-day free trial</strong> starts automatically</p>
+      </div>
+
+      <div class="card rounded-2xl p-4 flex gap-3 items-start">
+        <span class="text-xl shrink-0">🇱🇰</span>
+        <div>
+          <p class="text-white text-xs font-semibold si">සිංහල</p>
+          <p class="text-slate-500 text-xs">Full Sinhala support</p>
         </div>
-        <div class="flex items-start gap-3">
-          <span class="w-5 h-5 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
-          <p class="text-slate-300 text-sm">After trial, contact us for a license key</p>
+      </div>
+
+      <div class="card rounded-2xl p-4 flex gap-3 items-start">
+        <span class="text-xl shrink-0">📊</span>
+        <div>
+          <p class="text-white text-xs font-semibold si">රිපෝට්</p>
+          <p class="text-slate-500 text-xs">Daily sales reports</p>
+        </div>
+      </div>
+
+      <div class="card rounded-2xl p-4 flex gap-3 items-start">
+        <span class="text-xl shrink-0">👥</span>
+        <div>
+          <p class="text-white text-xs font-semibold si">ණය ගිණුම්</p>
+          <p class="text-slate-500 text-xs">Customer credit tracking</p>
+        </div>
+      </div>
+
+      <div class="card rounded-2xl p-4 flex gap-3 items-start">
+        <span class="text-xl shrink-0">🔄</span>
+        <div>
+          <p class="text-white text-xs font-semibold si">Auto Update</p>
+          <p class="text-slate-500 text-xs">Always up to date</p>
         </div>
       </div>
     </div>
 
-    <p class="text-slate-500 text-xs">
-      Need help? <a href="mailto:support@lumac.cc" class="text-indigo-400 hover:underline font-medium">support@lumac.cc</a>
-      &nbsp;·&nbsp; 076 464 3050 &nbsp;·&nbsp;
-      <a href="https://lumac.lk" class="text-indigo-400 hover:underline font-medium">lumac.lk</a>
-    </p>
-  </div>
+    <!-- ── How to install ── -->
+    <div class="f4 card rounded-3xl p-5 mb-4">
+      <p class="text-white font-bold text-sm mb-1 si">ස්ථාපනය කරන ආකාරය</p>
+      <p class="text-slate-500 text-xs mb-4">How to install</p>
+
+      <div class="space-y-4">
+
+        <div class="flex gap-3 items-start">
+          <span class="step-num w-7 h-7 rounded-full text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+          <div>
+            <p class="text-white text-sm font-medium si">ඉහතින් "බාගන්න" ක්ලික් කරන්න</p>
+            <p class="text-slate-500 text-xs">Click the "Download" button above</p>
+          </div>
+        </div>
+
+        <div class="flex gap-3 items-start">
+          <span class="step-num w-7 h-7 rounded-full text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+          <div>
+            <p class="text-white text-sm font-medium si">බාගත් ගොනුව විවෘත කරන්න</p>
+            <p class="text-slate-500 text-xs">Open the downloaded <code class="bg-white/10 px-1 rounded text-indigo-300">.exe</code> file and tap <strong class="text-white">Install</strong></p>
+            <p class="text-slate-600 text-xs si mt-0.5">(Windows අවවාදයක් ආවොත් "Run anyway" ක්ලික් කරන්න)</p>
+          </div>
+        </div>
+
+        <div class="flex gap-3 items-start">
+          <span class="step-num w-7 h-7 rounded-full text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+          <div>
+            <p class="text-white text-sm font-medium si">LUMAC POS විවෘත කරන්න</p>
+            <p class="text-slate-500 text-xs">Open the app from your desktop — trial starts right away</p>
+            <p class="text-slate-600 text-xs si mt-0.5">දින 3ක නොමිලේ trial ස්වයංක්‍රීයව ආරම්භ වේ</p>
+          </div>
+        </div>
+
+        <div class="flex gap-3 items-start">
+          <span class="w-7 h-7 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+          <div>
+            <p class="text-white text-sm font-medium si">Trial ඉවර වූ පසු අපව අමතන්න</p>
+            <p class="text-slate-500 text-xs">Contact us for a license key after the trial</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Contact ── -->
+    <div class="f5 text-center">
+      <p class="text-slate-600 text-xs si mb-1">උදව් අවශ්‍යද? · Need help?</p>
+      <p class="text-slate-500 text-xs">
+        <a href="tel:0764643050" class="text-indigo-400 hover:text-indigo-300 font-semibold transition">076 464 3050</a>
+        &nbsp;·&nbsp;
+        <a href="mailto:support@lumac.cc" class="text-indigo-400 hover:text-indigo-300 transition">support@lumac.cc</a>
+        &nbsp;·&nbsp;
+        <a href="https://lumac.lk" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition">lumac.lk</a>
+      </p>
+    </div>
+
+  </div><!-- /max-w-md -->
 
   <script>
-    // Fetch latest release info to show version
+    // Download count
+    fetch('/api/stats')
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById('dlCount').textContent = (d.downloads || 0).toLocaleString();
+      })
+      .catch(() => { document.getElementById('dlCount').textContent = '0'; });
+
+    // GitHub version & size
     fetch('https://api.github.com/repos/csm-chathu/POS-offline/releases/latest', {
       headers: { Accept: 'application/vnd.github+json' }
     })
     .then(r => r.json())
     .then(data => {
-      const label = document.getElementById('versionLabel');
       if (data.tag_name) {
+        document.getElementById('versionBadge').textContent = data.tag_name;
         const asset = data.assets?.find(a => a.name.endsWith('.exe'));
-        const size  = asset ? ` · ${(asset.size / 1024 / 1024).toFixed(1)} MB` : '';
-        label.textContent = `Latest: ${data.tag_name}${size}`;
-      } else {
-        label.textContent = '';
+        if (asset) document.getElementById('sizeBadge').textContent = (asset.size / 1024 / 1024).toFixed(1) + ' MB';
       }
     })
-    .catch(() => { document.getElementById('versionLabel').textContent = ''; });
+    .catch(() => {});
   </script>
 </body>
 </html>
