@@ -13,7 +13,7 @@
     .si { font-family: 'Noto Sans Sinhala', sans-serif; }
 
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-    @keyframes glow  { 0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.55)} 60%{box-shadow:0 0 0 14px rgba(99,102,241,0)} }
+    @keyframes glow  { 0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.55)} 60%{box-shadow:0 0 0 16px rgba(99,102,241,0)} }
     @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 
     .float    { animation: float 4s ease-in-out infinite; }
@@ -26,89 +26,89 @@
     .a5 { animation: fadeIn .5s .45s both; }
     .a6 { animation: fadeIn .5s .55s both; }
 
-    .glass { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); }
-    .right-panel { background: rgba(255,255,255,.03); border-left: 1px solid rgba(255,255,255,.08); }
-    .feat { transition: background .2s; }
-    .feat:hover { background: rgba(255,255,255,.08); }
+    .glass       { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); }
+    .right-panel { background:rgba(255,255,255,.03); border-left:1px solid rgba(255,255,255,.08); }
+    .feat        { transition: background .2s; }
+    .feat:hover  { background: rgba(255,255,255,.09); }
   </style>
 </head>
 <body class="bg-[#0d1225] text-white">
 
   <!-- Background orbs -->
   <div class="pointer-events-none fixed inset-0 overflow-hidden">
-    <div class="absolute -top-40 -left-20 w-96 h-96 rounded-full opacity-[.12]"
+    <div class="absolute -top-40 -left-20 w-[500px] h-[500px] rounded-full opacity-[.12]"
          style="background:radial-gradient(circle,#6366f1,transparent 70%)"></div>
-    <div class="absolute bottom-0 right-0 w-80 h-80 rounded-full opacity-[.07]"
+    <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-[.07]"
          style="background:radial-gradient(circle,#f97316,transparent 70%)"></div>
   </div>
 
-  <!-- ═══════════════ 2-Column Layout ═══════════════ -->
+  <!-- ═══════════ 2-Column Layout ═══════════ -->
   <div class="relative z-10 flex h-screen">
 
-    <!-- ── LEFT: Brand + Download ───────────────────── -->
-    <div class="flex flex-col justify-center items-center w-1/2 px-10 py-8 gap-5">
+    <!-- ── LEFT: Brand + Download ──────────── -->
+    <div class="flex flex-col justify-center items-center w-1/2 px-12 py-8 gap-5">
 
       <!-- Logo -->
       <div class="a1 text-center">
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center mx-auto mb-3 shadow-2xl shadow-indigo-500/30 float">
-          <span class="text-white font-black text-3xl">L</span>
+        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-indigo-500/30 float">
+          <span class="text-white font-black text-5xl">L</span>
         </div>
-        <h1 class="text-2xl font-extrabold text-white tracking-tight">LUMAC POS</h1>
-        <p class="text-indigo-300 text-sm si mt-0.5">ඔබේ කඩේ සඳහා හොඳම POS</p>
-        <p class="text-slate-500 text-xs">Sri Lanka's #1 Shop Software</p>
+        <h1 class="text-4xl font-extrabold text-white tracking-tight">LUMAC POS</h1>
+        <p class="text-indigo-300 text-lg si mt-1">ඔබේ කඩේ සඳහා හොඳම POS</p>
+        <p class="text-slate-400 text-sm mt-0.5">Sri Lanka's #1 Shop Software</p>
       </div>
 
       <!-- Download Button -->
-      <div class="a2 w-full max-w-xs">
+      <div class="a2 w-full max-w-sm">
         <a href="/download" id="downloadBtn"
-           class="btn-glow flex flex-col items-center justify-center gap-1 w-full py-5 rounded-2xl bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white font-bold shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[.98] group">
-          <svg class="w-8 h-8 group-hover:animate-bounce mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+           class="btn-glow flex flex-col items-center justify-center gap-1.5 w-full py-6 rounded-2xl bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white font-bold shadow-xl transition-all duration-200 hover:scale-[1.02] active:scale-[.98] group">
+          <svg class="w-10 h-10 group-hover:animate-bounce mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
           </svg>
-          <span class="text-xl si">බාගන්න</span>
-          <span class="text-sm font-medium opacity-80">Download for Windows</span>
+          <span class="text-2xl si">බාගන්න</span>
+          <span class="text-base font-semibold opacity-80">Download for Windows</span>
         </a>
       </div>
 
       <!-- Version & Size -->
-      <div class="a3 glass rounded-xl px-4 py-2.5 w-full max-w-xs flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+      <div class="a3 glass rounded-xl px-5 py-3 w-full max-w-sm flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
             <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
           </svg>
-          <span class="text-white text-xs font-semibold si">Windows 10 / 11</span>
+          <span class="text-white text-sm font-semibold si">Windows 10 / 11</span>
         </div>
         <div class="text-right">
-          <p id="versionBadge" class="text-indigo-300 text-xs font-semibold">—</p>
-          <p id="sizeBadge" class="text-slate-500 text-xs">—</p>
+          <p id="versionBadge" class="text-indigo-300 text-sm font-bold">—</p>
+          <p id="sizeBadge" class="text-slate-400 text-sm">—</p>
         </div>
       </div>
 
       <!-- Download Count -->
-      <div class="a4 flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <p class="text-slate-400 text-sm">
-          <strong id="dlCount" class="text-white font-bold">—</strong>
+      <div class="a4 flex items-center gap-2.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <p class="text-slate-300 text-base">
+          <strong id="dlCount" class="text-white font-bold text-lg">—</strong>
           <span class="si"> දෙනෙකු බාගෙන ඇත</span>
-          <span class="text-slate-600"> · </span>
-          <span class="text-slate-500 text-xs">already downloaded</span>
+          <span class="text-slate-500"> · </span>
+          <span class="text-slate-400 text-sm">already downloaded</span>
         </p>
       </div>
 
       <!-- Free Trial Badge -->
-      <div class="a5 flex items-center gap-2.5 glass rounded-full px-4 py-2">
-        <span class="text-lg">🎁</span>
+      <div class="a5 flex items-center gap-3 glass rounded-full px-5 py-2.5">
+        <span class="text-2xl">🎁</span>
         <div>
-          <span class="text-white text-xs font-semibold si">දින 3ක් නොමිලේ</span>
-          <span class="text-slate-500 text-xs"> · Free 3-day trial</span>
+          <span class="text-white text-sm font-bold si">දින 3ක් නොමිලේ</span>
+          <span class="text-slate-400 text-sm"> · Free 3-day trial</span>
         </div>
       </div>
 
       <!-- Contact -->
       <div class="a6 text-center">
-        <p class="text-slate-600 text-xs si mb-0.5">උදව් අවශ්‍යද?</p>
-        <p class="text-slate-500 text-xs">
-          <a href="tel:0764643050" class="text-indigo-400 hover:text-indigo-300 font-semibold transition">076 464 3050</a>
+        <p class="text-slate-400 text-sm si mb-1">උදව් අවශ්‍යද? · Need help?</p>
+        <p class="text-slate-400 text-sm">
+          <a href="tel:0764643050" class="text-indigo-400 hover:text-indigo-300 font-bold transition">076 464 3050</a>
           &nbsp;·&nbsp;
           <a href="mailto:support@lumac.cc" class="text-indigo-400 hover:text-indigo-300 transition">support@lumac.cc</a>
           &nbsp;·&nbsp;
@@ -118,59 +118,59 @@
 
     </div><!-- /left -->
 
-    <!-- ── RIGHT: Features + Steps ──────────────────── -->
-    <div class="right-panel flex flex-col justify-center w-1/2 px-10 py-8 gap-6">
+    <!-- ── RIGHT: Features + Steps ─────────── -->
+    <div class="right-panel flex flex-col justify-center w-1/2 px-12 py-8 gap-7">
 
       <!-- Features Grid -->
       <div class="a3">
-        <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest mb-3">Features · විශේෂාංග</p>
-        <div class="grid grid-cols-2 gap-2.5">
+        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest mb-4">Features · විශේෂාංග</p>
+        <div class="grid grid-cols-2 gap-3">
 
-          <div class="feat glass rounded-2xl px-4 py-3 flex items-center gap-3">
-            <span class="text-xl">⚡</span>
+          <div class="feat glass rounded-2xl px-5 py-4 flex items-center gap-4">
+            <span class="text-2xl">⚡</span>
             <div>
-              <p class="text-white text-xs font-semibold si">ඉක්මන් විකිණීම</p>
-              <p class="text-slate-500 text-xs">Blazing fast sales</p>
+              <p class="text-white text-sm font-bold si">ඉක්මන් විකිණීම</p>
+              <p class="text-slate-400 text-xs">Blazing fast sales</p>
             </div>
           </div>
 
-          <div class="feat glass rounded-2xl px-4 py-3 flex items-center gap-3">
-            <span class="text-xl">📶</span>
+          <div class="feat glass rounded-2xl px-5 py-4 flex items-center gap-4">
+            <span class="text-2xl">📶</span>
             <div>
-              <p class="text-white text-xs font-semibold si">නෙට් නැතිව</p>
-              <p class="text-slate-500 text-xs">Works offline</p>
+              <p class="text-white text-sm font-bold si">නෙට් නැතිව</p>
+              <p class="text-slate-400 text-xs">Works offline</p>
             </div>
           </div>
 
-          <div class="feat glass rounded-2xl px-4 py-3 flex items-center gap-3">
-            <span class="text-xl">🇱🇰</span>
+          <div class="feat glass rounded-2xl px-5 py-4 flex items-center gap-4">
+            <span class="text-2xl">🇱🇰</span>
             <div>
-              <p class="text-white text-xs font-semibold si">සිංහල සහාය</p>
-              <p class="text-slate-500 text-xs">Full Sinhala UI</p>
+              <p class="text-white text-sm font-bold si">සිංහල සහාය</p>
+              <p class="text-slate-400 text-xs">Full Sinhala UI</p>
             </div>
           </div>
 
-          <div class="feat glass rounded-2xl px-4 py-3 flex items-center gap-3">
-            <span class="text-xl">📊</span>
+          <div class="feat glass rounded-2xl px-5 py-4 flex items-center gap-4">
+            <span class="text-2xl">📊</span>
             <div>
-              <p class="text-white text-xs font-semibold si">දෛනික රිපෝට්</p>
-              <p class="text-slate-500 text-xs">Daily reports</p>
+              <p class="text-white text-sm font-bold si">දෛනික රිපෝට්</p>
+              <p class="text-slate-400 text-xs">Daily reports</p>
             </div>
           </div>
 
-          <div class="feat glass rounded-2xl px-4 py-3 flex items-center gap-3">
-            <span class="text-xl">👥</span>
+          <div class="feat glass rounded-2xl px-5 py-4 flex items-center gap-4">
+            <span class="text-2xl">👥</span>
             <div>
-              <p class="text-white text-xs font-semibold si">ණය ගිණුම්</p>
-              <p class="text-slate-500 text-xs">Customer credit</p>
+              <p class="text-white text-sm font-bold si">ණය ගිණුම්</p>
+              <p class="text-slate-400 text-xs">Customer credit</p>
             </div>
           </div>
 
-          <div class="feat glass rounded-2xl px-4 py-3 flex items-center gap-3">
-            <span class="text-xl">🔄</span>
+          <div class="feat glass rounded-2xl px-5 py-4 flex items-center gap-4">
+            <span class="text-2xl">🔄</span>
             <div>
-              <p class="text-white text-xs font-semibold si">Auto Update</p>
-              <p class="text-slate-500 text-xs">Always up to date</p>
+              <p class="text-white text-sm font-bold si">Auto Update</p>
+              <p class="text-slate-400 text-xs">Always up to date</p>
             </div>
           </div>
 
@@ -179,38 +179,38 @@
 
       <!-- Install Steps -->
       <div class="a4">
-        <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest mb-3">How to install · ස්ථාපනය</p>
-        <div class="space-y-2.5">
+        <p class="text-slate-400 text-sm font-bold uppercase tracking-widest mb-4">How to install · ස්ථාපනය</p>
+        <div class="space-y-3">
 
           <div class="flex items-center gap-3">
-            <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>
-            <div class="flex-1 glass rounded-xl px-3 py-2">
-              <span class="text-white text-xs font-medium si">බාගන්න බොත්තම ඔබන්න</span>
-              <span class="text-slate-500 text-xs"> · Click Download</span>
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white text-sm font-bold flex items-center justify-center shrink-0">1</span>
+            <div class="flex-1 glass rounded-xl px-4 py-2.5">
+              <span class="text-white text-sm font-semibold si">බාගන්න බොත්තම ඔබන්න</span>
+              <span class="text-slate-400 text-sm"> · Click Download</span>
             </div>
           </div>
 
           <div class="flex items-center gap-3">
-            <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
-            <div class="flex-1 glass rounded-xl px-3 py-2">
-              <span class="text-white text-xs font-medium si">.exe ගොනුව විවෘත කර Install කරන්න</span>
-              <span class="text-slate-500 text-xs"> · Run the installer</span>
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white text-sm font-bold flex items-center justify-center shrink-0">2</span>
+            <div class="flex-1 glass rounded-xl px-4 py-2.5">
+              <span class="text-white text-sm font-semibold si">.exe ගොනුව විවෘත කර Install කරන්න</span>
+              <span class="text-slate-400 text-sm"> · Run the installer</span>
             </div>
           </div>
 
           <div class="flex items-center gap-3">
-            <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">3</span>
-            <div class="flex-1 glass rounded-xl px-3 py-2">
-              <span class="text-white text-xs font-medium si">LUMAC POS විවෘත කරන්න — Trial ආරම්භ වේ</span>
-              <span class="text-slate-500 text-xs"> · Open &amp; start trial</span>
+            <span class="w-8 h-8 rounded-full bg-indigo-600 text-white text-sm font-bold flex items-center justify-center shrink-0">3</span>
+            <div class="flex-1 glass rounded-xl px-4 py-2.5">
+              <span class="text-white text-sm font-semibold si">LUMAC POS විවෘත කරන්න — Trial ආරම්භ වේ</span>
+              <span class="text-slate-400 text-sm"> · Open &amp; start trial</span>
             </div>
           </div>
 
           <div class="flex items-center gap-3">
-            <span class="w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>
-            <div class="flex-1 glass rounded-xl px-3 py-2">
-              <span class="text-white text-xs font-medium si">Trial ඉවර වූ පසු License Key ගන්න</span>
-              <span class="text-slate-500 text-xs"> · Get a key after trial</span>
+            <span class="w-8 h-8 rounded-full bg-orange-500 text-white text-sm font-bold flex items-center justify-center shrink-0">4</span>
+            <div class="flex-1 glass rounded-xl px-4 py-2.5">
+              <span class="text-white text-sm font-semibold si">Trial ඉවර වූ පසු License Key ගන්න</span>
+              <span class="text-slate-400 text-sm"> · Get a key after trial</span>
             </div>
           </div>
 
