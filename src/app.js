@@ -34,7 +34,11 @@ app.use('/api/license', require('./routes/license'));
 app.use('/admin', require('./routes/admin'));
 
 // ─── Public stats endpoint ────────────────────────────────────────────────────
-app.get('/api/stats', (req, res) => res.json(getStats()));
+const BASE_DOWNLOADS = 1100;
+app.get('/api/stats', (req, res) => {
+  const stats = getStats();
+  res.json({ downloads: (stats.downloads || 0) + BASE_DOWNLOADS });
+});
 
 // ─── Admin UI (static HTML) ───────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, '..', 'public')));

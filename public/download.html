@@ -232,8 +232,8 @@
   <script>
     fetch('/api/stats')
       .then(r => r.json())
-      .then(d => { document.getElementById('dlCount').textContent = (d.downloads || 0).toLocaleString(); })
-      .catch(() => { document.getElementById('dlCount').textContent = '0'; });
+      .then(d => { document.getElementById('dlCount').textContent = (d.downloads || 1100).toLocaleString(); })
+      .catch(() => { document.getElementById('dlCount').textContent = (1100).toLocaleString(); });
 
     fetch('https://api.github.com/repos/csm-chathu/POS-offline/releases/latest', {
       headers: { Accept: 'application/vnd.github+json' }
